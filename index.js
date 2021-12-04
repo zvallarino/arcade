@@ -14,6 +14,12 @@ const CELL_SIZE = 64;
 
 const PLAYER_SIZE = 10;
 
+const FOV = 60;
+
+const COLORS = {
+  rays:"FF00E8"
+}
+
 const map = [
   [1, 1, 1, 1, 1, 1, 1],
   [1, 0, 0, 0, 0, 0, 1],
@@ -36,8 +42,23 @@ function clearScreen(){
   context.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 }
 
-function movePlayer(){}
-function getRays(){}
+function movePlayer(){
+  player.x += Math.cos(player.angle) * player.speed
+  player.y += Math.sin(player.angle) * player.speed
+}
+
+
+function getRays(){
+  // const initialAngle = player.angle - FOV/2
+  // const numberOfRays = SCREEN_WIDTH;
+  // const angleStep = FOV / numberOfRays;
+  // return Array.from({ length: numberOfRays }, (_, i) => {
+  //   const angle = initialAngle + i * angleStep;
+  //   const ray = castRay(angle)
+  //   return ray
+  // });
+  return []
+}
 function renderScene(rays){}
 
 
@@ -52,6 +73,20 @@ function renderMinimap(posX = 0,posY = 0, scale = 1, rays){
     })
   })
 
+  
+  context.strokeStyle = COLORS.rays;
+  rays.forEach(ray=>{
+    context.beginPath()
+    context.moveTo(player.x * scale + posX, player.y * scale + posY)
+    context.LineTo(
+      (player.x + Math.cos(ray.angle) * ray.distance) * scale,
+      (player.y + Math.sin(ray.angle) * ray.distance) * scale,
+    )
+    context.closePath()
+    context.stroke()
+    })
+
+
   context.fillStyle="#ff2121"
   context.fillRect(
     posX + player.x * scale - PLAYER_SIZE/2,
@@ -61,9 +96,16 @@ function renderMinimap(posX = 0,posY = 0, scale = 1, rays){
   )
 
   const rayLength = PLAYER_SIZE * 2;
-  context.strokeStyle = "#21ff6b";
+  context.strokeStyle = "#00C215";
   context.beginPath()
-  context.moveTo(player.x * scale + posX, player.y * scale + posy )
+  context.moveTo(player.x * scale + posX, player.y * scale + posY)
+  context.lineTo(
+    (player.x + Math.cos(player.angle) * rayLength) * scale,
+    (player.y + Math.sin(player.angle) * rayLength) * scale,
+  )
+  context.closePath()
+  context.stroke()
+
 }
 
 function gameLoop(){
@@ -75,4 +117,27 @@ function gameLoop(){
 }
 
 setInterval(gameLoop, TICK)
+
+function toRadians(deg){
+  return (deg * Math.PI)/ 180
+}
+
+document.addEventListener("keydown",(e)=>{
+  if(e.key === "w"){
+    player.speed = 2
+  }
+  if(e.key === "s"){
+    player.speed = -2
+  }
+})
+
+document.addEventListener("keyup",(e)=>{
+  if(e.key === "w" || e.key === "s"){
+    player.speed = 0
+  }
+})
+
+document.addEventListener("mousemove", (e)=>{
+  player.angle += toRadians(e.movementX)
+})
 
