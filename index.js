@@ -14,30 +14,39 @@ const CELL_SIZE = 64;
 
 const PLAYER_SIZE = 10;
 
+const PLAYERTWO_SIZE = 10;
+
 const FOV = toRadians(60);
 
 const COLORS = {
-  floor: "#6EF0FF",
-  ceiling: "#F5FFB3",
-  wall:"#FFFF00",
-  wallDark:"#E8FF59",
+  floor: "#FF2700",
+  ceiling: "#000000",
+  wall:"#55AFFF",
+  wallDark:"#0800FF",
   rays:"#FF002B",
 
 }
 
 const map = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0],
-  [1, 0, 1, 1, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 1, 0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 0, 1, 0, 1],
+  [1, 1, 1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 0, 0],
+  [1, 0, 1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 0, 0],
+  [1, 0, 1, 0, 1, 0, 1],
+  [1, 0, 1, 0, 1, 0, 1],
+  [1, 0, 1, 0, 1, 0, 1],
 ];
 
 const player = {
   x: CELL_SIZE * 1.5,
   y: CELL_SIZE * 2,
+  angle: 0,
+  speed: 0
+}
+
+const playerTwo = {
+  x: CELL_SIZE * 5.5,
+  y: CELL_SIZE * 6,
   angle: 0,
   speed: 0
 }
@@ -155,13 +164,9 @@ function getRays(){
 }
 
 function fixFishEye(distance, angle, playerAngle){
-
   const diff = angle - playerAngle;
   return distance * Math.cos(diff)
-
 }
-
-
 
 function renderScene(rays){
   rays.forEach((ray, i) => {
@@ -169,13 +174,13 @@ function renderScene(rays){
     const wallHeight = ((CELL_SIZE * 5) / distance) * 277;
     context.fillStyle = ray.vertical ? COLORS.wallDark : COLORS.wall;
     context.fillRect(i, SCREEN_HEIGHT / 2 - wallHeight, 1, wallHeight)
-
+ 
     context.fillStyle = COLORS.floor;
     context.fillRect(
       i,
-      SCREEN_HEIGHT / 2 + wallHeight /2,
+      SCREEN_HEIGHT / 2 + wallHeight / 2,
       1,
-      SCREEN_HEIGHT /2 - wallHeight /2
+      SCREEN_HEIGHT / 2 - wallHeight / 2
       );
     
     context.fillStyle = COLORS.ceiling;
@@ -183,7 +188,7 @@ function renderScene(rays){
       i,
       0,
       1,
-      SCREEN_HEIGHT /2 - wallHeight /2
+      SCREEN_HEIGHT / 2 - wallHeight / 2
       );
   } )
 
@@ -213,13 +218,25 @@ function renderMinimap(posX = 0,posY = 0, scale = 1, rays){
     context.stroke()
     })
 
-  // context.fillStyle="#ffffff"
+
+  context.fillStyle="green"
+  context.fillRect(
+    posX + playerTwo.x * scale - PLAYER_SIZE/2,
+    posY + playerTwo.y * scale - PLAYER_SIZE/2,
+    PLAYER_SIZE,
+    PLAYER_SIZE
+  )
+
+  context.fillStyle="#0800FF"
   context.fillRect(
     posX + player.x * scale - PLAYER_SIZE/2,
     posY + player.y * scale - PLAYER_SIZE/2,
     PLAYER_SIZE,
     PLAYER_SIZE
   )
+
+
+  
 
   const rayLength = PLAYER_SIZE * 2;
   context.strokeStyle = "#00C215";
