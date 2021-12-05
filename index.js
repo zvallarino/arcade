@@ -29,24 +29,47 @@ const COLORS = {
 
 const map = [
   [1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 0, 0, 0, 0],
+  [1, 0, 1, 0, 0, 1, 1],
+  [1, 0, 1, 0, 0, 0, 0],
+  [1, 0, 1, 0, 0, 1, 1],
+  [1, 0, 1, 0, 0, 0, 0],
+  [1, 0, 1, 0, 0, 1, 1],
   [1, 0, 0, 0, 0, 0, 0],
-  [1, 0, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 0, 0],
-  [1, 0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 0, 1],
+  [1, 1, 1, 1, 1, 1, 1],
 ];
 
 const player = {
   x: CELL_SIZE * 1.5,
-  y: CELL_SIZE * 2,
+  y: CELL_SIZE * 2.5,
   angle: 0,
   speed: 0
 }
 
 const playerTwo = {
-  x: CELL_SIZE * 5.5,
-  y: CELL_SIZE * 6,
+  x: CELL_SIZE * 6.5,
+  y: CELL_SIZE * 1.5,
+  angle: 0,
+  speed: 0
+}
+
+const playerThree = {
+  x: CELL_SIZE * 6.5,
+  y: CELL_SIZE * 3.5,
+  angle: 0,
+  speed: 0
+}
+
+const playerFour = {
+  x: CELL_SIZE * 6.5,
+  y: CELL_SIZE * 5.5,
+  angle: 0,
+  speed: 0
+}
+
+const playerFive = {
+  x: CELL_SIZE * 6.5,
+  y: CELL_SIZE * 7.5,
   angle: 0,
   speed: 0
 }
@@ -223,6 +246,30 @@ function renderMinimap(posX = 0,posY = 0, scale = 1, rays){
   context.fillRect(
     posX + playerTwo.x * scale - PLAYER_SIZE/2,
     posY + playerTwo.y * scale - PLAYER_SIZE/2,
+    PLAYER_SIZE,
+    PLAYER_SIZE
+  )
+
+  context.fillStyle="red"
+  context.fillRect(
+    posX + playerThree.x * scale - PLAYER_SIZE/2,
+    posY + playerThree.y * scale - PLAYER_SIZE/2,
+    PLAYER_SIZE,
+    PLAYER_SIZE
+  )
+
+  context.fillStyle="yellow"
+  context.fillRect(
+    posX + playerFour.x * scale - PLAYER_SIZE/2,
+    posY + playerFour.y * scale - PLAYER_SIZE/2,
+    PLAYER_SIZE,
+    PLAYER_SIZE
+  )
+
+  context.fillStyle="purple"
+  context.fillRect(
+    posX + playerFive.x * scale - PLAYER_SIZE/2,
+    posY + playerFive.y * scale - PLAYER_SIZE/2,
     PLAYER_SIZE,
     PLAYER_SIZE
   )
